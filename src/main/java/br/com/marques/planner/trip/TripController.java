@@ -1,8 +1,9 @@
 package br.com.marques.planner.trip;
 
-import br.com.marques.planner.participant.ParticipantCreateResponse;
-import br.com.marques.planner.participant.ParticipantRequestPayload;
-import br.com.marques.planner.participant.ParticipantService;
+import br.com.marques.planner.activities.ActivityRequestPayload;
+import br.com.marques.planner.activities.ActivityResponse;
+import br.com.marques.planner.activities.ActivityService;
+import br.com.marques.planner.participant.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,9 @@ public class TripController {
     private ParticipantService participantService;
     @Autowired
     private TripRepository tripRepository;
+
+    @Autowired
+    private ActivityService activityService;
 
     @PostMapping
     public ResponseEntity<TripCreateResponse> createTrip(@RequestBody TripRequestPayload payload) {
@@ -80,6 +84,24 @@ public class TripController {
             return ResponseEntity.ok(participantResponse);
         }
         return ResponseEntity.notFound().build();
+    }
+    @PostMapping("/{id}/activities")
+    public ResponseEntity<ActivityResponse> registerActivity(@PathVariable UUID id ,@RequestBody ActivityRequestPayload payload) {
+        Optional<Trip> trip = this.tripRepository.findById(id);
+
+        if(trip.isPresent()){
+            Trip rawTrip = trip.get();
+            ActivityResponse activityResponse = this.activityService.registerActivity(payload, rawTrip);
+
+            return ResponseEntity.ok(activityResponse);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/{id}/participants")
+    public ResponseEntity<List<ParticipantData>> getAllParticipants(@PathVariable UUID id) {
+        List<ParticipantData> participantList = this.participantService.getAllParticipantsFromEvent(id);
+        return ResponseEntity.ok(participantList);
     }
 
 

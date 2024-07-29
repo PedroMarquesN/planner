@@ -1,5 +1,6 @@
 package br.com.marques.planner.trip;
 
+import br.com.marques.planner.activities.ActivityData;
 import br.com.marques.planner.activities.ActivityRequestPayload;
 import br.com.marques.planner.activities.ActivityResponse;
 import br.com.marques.planner.activities.ActivityService;
@@ -98,11 +99,20 @@ public class TripController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/{id}/activities")
+    public ResponseEntity <List<ActivityData>>getAllActivities(@PathVariable UUID id ) {
+        List<ActivityData> activityDataList = this.activityService.getAllActivitiesFromId(id);
+
+        return  ResponseEntity.ok(activityDataList);
+    }
+
     @GetMapping("/{id}/participants")
     public ResponseEntity<List<ParticipantData>> getAllParticipants(@PathVariable UUID id) {
         List<ParticipantData> participantList = this.participantService.getAllParticipantsFromEvent(id);
         return ResponseEntity.ok(participantList);
     }
+
+
 
 
 }

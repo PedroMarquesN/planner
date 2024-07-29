@@ -1,4 +1,4 @@
-package br.com.marques.planner.activities;
+package br.com.marques.planner.activity;
 
 import br.com.marques.planner.trip.Trip;
 import org.springframework.beans.factory.annotation.Autowired;

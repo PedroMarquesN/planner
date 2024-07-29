@@ -1,4 +1,4 @@
-package br.com.marques.planner.activities;
+package br.com.marques.planner.activity;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
